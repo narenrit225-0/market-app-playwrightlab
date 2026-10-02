@@ -34,18 +34,21 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
 
-  /* Run the test suite against all three Playwright browser engines. */
+  /* Assign two test cases to each browser (six test cases total). */
   projects: [
     {
       name: 'chromium',
+      grep: /TC0[12]\b/,
       use: { ...devices['Desktop Chrome'], channel: 'chromium' },
     },
     {
       name: 'firefox',
+      grep: /TC0[34]\b/,
       use: { ...devices['Desktop Firefox'] },
     },
     {
       name: 'webkit',
+      grep: /TC0[56]\b/,
       use: { ...devices['Desktop Safari'] },
     },
   ],
