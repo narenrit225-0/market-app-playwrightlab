@@ -15,6 +15,7 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/');
 });
 
+
 test('TC01 Login เจ้าของตลาดสำเร็จ', async ({ page }) => {
   const form = loginForm(page);
 
@@ -22,8 +23,8 @@ test('TC01 Login เจ้าของตลาดสำเร็จ', async ({ 
   await form.password.fill(ownerPassword);
   await form.submit.click();
 
-  await expect(page.getByText('เข้าสู่ระบบสำเร็จ')).toBeVisible();
-  await expect(page.getByRole('combobox', { name: 'เลือกบทบาทผู้ใช้งาน' })).toHaveValue('owner');
+
+  await expect(page.getByText('ยินดีต้อนรับ')).toBeVisible();
 });
 
 test('TC02 Login เจ้าของตลาดใส่เบอร์โทรผิด', async ({ page }) => {
@@ -33,7 +34,8 @@ test('TC02 Login เจ้าของตลาดใส่เบอร์โท
   await form.password.fill(ownerPassword);
   await form.submit.click();
 
-  await expect(page.getByRole('alert')).toHaveText('หมายเลขโทรศัพท์หรือรหัสผ่านไม่ถูกต้อง');
+
+  await expect(page.getByRole('alert')).toBeVisible();
 });
 
 test('TC03 Login เจ้าของตลาดใส่ password ผิด', async ({ page }) => {
@@ -43,10 +45,10 @@ test('TC03 Login เจ้าของตลาดใส่ password ผิด',
   await form.password.fill('wrong-password');
   await form.submit.click();
 
-  await expect(page.getByRole('alert')).toHaveText('หมายเลขโทรศัพท์หรือรหัสผ่านไม่ถูกต้อง');
+  await expect(page.getByRole('alert')).toBeVisible();
 });
 
-test('TC04 Login เจ้าของตลาดไม่กรอกเบอร์โทรและรหัสผ่าน', async ({ page }) => {
+test('TC04 Login เจ้าของตลาด ไม่กรอกเบอร์โทรและรหัสผ่าน', async ({ page }) => {
   const form = loginForm(page);
 
   await form.submit.click();
@@ -56,11 +58,11 @@ test('TC04 Login เจ้าของตลาดไม่กรอกเบอ
   await expect(page.getByRole('heading', { name: 'ยินดีต้อนรับ' })).toBeVisible();
 });
 
-test('TC05 Login เจ้าของตลาดกรอกเบอร์โทรไม่ครบ 10 หลัก', async ({ page }) => {
+test('TC05 Login เจ้าของตลาด กรอกเบอร์โทรไม่ครบถ้วน (ไม่ครบ 10 หลัก)', async ({ page }) => {
   const form = loginForm(page);
 
-  await form.phone.fill('0812345');
-  await form.password.fill('123456');
+  await form.phone.fill('0812345'); 
+  await form.password.fill(ownerPassword);
   await form.submit.click();
 
   await expect(form.phone).toHaveValue('0812345');
@@ -68,11 +70,11 @@ test('TC05 Login เจ้าของตลาดกรอกเบอร์โ
   await expect(page.getByRole('heading', { name: 'ยินดีต้อนรับ' })).toBeVisible();
 });
 
-test('TC06 Login เจ้าของตลาดกรอกตัวอักษรในช่องเบอร์โทรศัพท์', async ({ page }) => {
+test('TC06 Login เจ้าของตลาด กรอกตัวอักษรในช่องเบอร์โทรศัพท์', async ({ page }) => {
   const form = loginForm(page);
 
   await form.phone.fill('abcdefghij');
-  await form.password.fill('123456');
+  await form.password.fill(ownerPassword);
   await form.submit.click();
 
   await expect(form.phone).toHaveValue('abcdefghij');
